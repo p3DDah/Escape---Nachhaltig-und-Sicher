@@ -1,0 +1,84 @@
+{
+  "web": {
+    "sums_url": "renpy-7.4.10-web.sums", 
+    "version": "889cac19e224cdf5b41756e65aa90fd9e4b6d3eba79ce592d3059011e58c7839", 
+    "zsync_url": "renpy-7.4.10-web.zsync", 
+    "json_url": "renpy-7.4.10-web.update.json", 
+    "pretty_version": "Ren'Py 7.4.10.2178", 
+    "sums_size": 968, 
+    "digest": "9bf863e11f0ea004d4f888fa54fb42a47f7179c088825328abc3b09f58563c0c"
+  }, 
+  "rapt": {
+    "sums_url": "renpy-7.4.10-rapt.sums", 
+    "version": "4646412f9e058ad5f4fb7d1a4f91fff74ce632f81d96921133185e28356dcdff", 
+    "zsync_url": "renpy-7.4.10-rapt.zsync", 
+    "json_url": "renpy-7.4.10-rapt.update.json", 
+    "pretty_version": "Ren'Py 7.4.10.2178", 
+    "sums_size": 5568, 
+    "digest": "d2726e83363c18b9a966fb5f5c3ab4ca8c0bf43bbb3ea3c3b8abe797e031bc88"
+  }, 
+  "steam": {
+    "sums_url": "renpy-7.4.10-steam.sums", 
+    "version": "2e3f96a860a21f8a51c75c08fe141bc7c3650ef6d9e16b9263a38a03264a1442", 
+    "zsync_url": "renpy-7.4.10-steam.zsync", 
+    "json_url": "renpy-7.4.10-steam.update.json", 
+    "pretty_version": "Ren'Py 7.4.10.2178", 
+    "sums_size": 180, 
+    "digest": "a0b506b5fda8f0fb27c78c90a02c658d7995e43317a9f84114bd37b23fcaa4f2"
+  }, 
+  "jedit": {
+    "sums_url": "renpy-7.4.10-jedit.sums", 
+    "version": "b999f68f88f6a96230a8cb6e657f6f08a4cb18fa9e7211c045523adc444a0e44", 
+    "zsync_url": "renpy-7.4.10-jedit.zsync", 
+    "json_url": "renpy-7.4.10-jedit.update.json", 
+    "pretty_version": "Ren'Py 7.4.10.2178", 
+    "sums_size": 840, 
+    "digest": "8109a2ff412deb28eabfb2c0cc1b422653a2f68b7e56ae1adcba52df07ccfeb0"
+  }, 
+  "monkeypatch": "def mac_fix():\n    import renpy\n    if not renpy.macintosh:\n        return\n\n    import os\n    mac = os.path.join(renpy.config.renpy_base, \"lib\", \"mac-x86_64\")\n    zsync = os.path.join(mac, \"zsync\")\n\n    if not os.path.isdir(mac):\n        return\n\n    if os.path.isdir(zsync):\n        return\n\n    import requests\n\n    response = requests.get(\"https://www.renpy.org/dl/mac-fix/zsync\")\n\n    with open(zsync + \".new\", \"w\") as f:\n        f.write(response.content)\n    \n    os.chmod(zsync + \".new\", 0o755)\n    os.rename(zsync + \".new\", zsync)\n\nmac_fix()\n", 
+  "renios": {
+    "sums_url": "renpy-7.4.10-renios.sums", 
+    "version": "17d66ac78119958e0554a65cfda351bbb7dcb14947c9af1e606a52013688e981", 
+    "zsync_url": "renpy-7.4.10-renios.zsync", 
+    "json_url": "renpy-7.4.10-renios.update.json", 
+    "pretty_version": "Ren'Py 7.4.10.2178", 
+    "sums_size": 10616, 
+    "digest": "2bd16c07298d592b5cec82eafcb7d9be98e805521d403a3728e108f018e4a7c8"
+  }, 
+  "atom-windows": {
+    "sums_url": "renpy-7.4.10-atom-windows.sums", 
+    "version": "1f62cf98f8cbf4a2ff13963b714a53023e0910d9a205b3cc837cea8befaecc5e", 
+    "zsync_url": "renpy-7.4.10-atom-windows.zsync", 
+    "json_url": "renpy-7.4.10-atom-windows.update.json", 
+    "pretty_version": "Ren'Py 7.4.10.2178", 
+    "sums_size": 38724, 
+    "digest": "c06d3155019e5ef860ec5dcf89ebd90a3fc75cbdb05a3f31318514fefd34c8b0"
+  }, 
+  "atom-linux": {
+    "sums_url": "renpy-7.4.10-atom-linux.sums", 
+    "version": "424c2ffe1c96ac6f1d9c7d5b94f43207f64efcad3df28934b68b421358a66f26", 
+    "zsync_url": "renpy-7.4.10-atom-linux.zsync", 
+    "json_url": "renpy-7.4.10-atom-linux.update.json", 
+    "pretty_version": "Ren'Py 7.4.10.2178", 
+    "sums_size": 39780, 
+    "digest": "8c7bd945e2d15106c7dd36b07bffc19ffbb35f06cec8752b5ae293c24a5e9b7e"
+  }, 
+  "atom-mac": {
+    "sums_url": "renpy-7.4.10-atom-mac.sums", 
+    "version": "6fd2d3abe0a013728566388d7b05876fb5479d065282b6aa1536b741e12c305e", 
+    "zsync_url": "renpy-7.4.10-atom-mac.zsync", 
+    "json_url": "renpy-7.4.10-atom-mac.update.json", 
+    "pretty_version": "Ren'Py 7.4.10.2178", 
+    "sums_size": 62020, 
+    "digest": "b96d370e0e42ad0be246501e146e987fb019e4000b76e96d51bd84d80cd3f242"
+  }, 
+  "sdk": {
+    "sums_url": "renpy-7.4.10-sdk.sums", 
+    "version": "a1406782b966b0190bb776c01be1d4f76e3ef2744ff85dd8d28910c336e10b34", 
+    "zsync_url": "renpy-7.4.10-sdk.zsync", 
+    "json_url": "renpy-7.4.10-sdk.update.json", 
+    "pretty_version": "Ren'Py 7.4.10.2178", 
+    "sums_size": 15220, 
+    "digest": "fc0ee89fe24605a45b79b3fd71aea67aecd33d547b66f4f85c32841a44ee841d"
+  }
+}

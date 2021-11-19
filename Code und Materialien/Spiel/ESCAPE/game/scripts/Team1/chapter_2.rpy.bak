@@ -1,0 +1,83 @@
+#Cockpit
+label team_1_chapter_2:
+    scene cockpit
+    $ renpy.notify("Cockpit")
+    play music "audio/cockpit.mp3"
+    call ShowCockpitObjects
+    call InitChapter2Vars
+    $ HideScreen("cockpitDoorPinpad")
+    $ HideScreen("gotoCockpitDoor")
+    $ renpy.pause(hard=True)
+
+label InitChapter2Vars:
+    $mussWarten = False
+    return
+
+label ShowCockpitObjects:
+    $ ShowScreen("key_L")
+    $ ShowScreen("key_I")
+    $ ShowScreen("key_N")
+    $ ShowScreen("key_U")
+    $ ShowScreen("key_X")
+    $ ShowScreen("key_W1")
+    $ ShowScreen("key_D")
+    $ ShowScreen("key_O")
+    $ ShowScreen("key_W2")
+    $ ShowScreen("key_S")
+    $ ShowScreen("key_P")
+    $ ShowScreen("key_E")
+    $ ShowScreen("key_R")
+    return
+
+label lockerDoorPinpadClicked:
+    if mussWarten:
+        $ renpy.notify("Bitte warten")
+    else:
+        $ renpy.notify("Verschlossen")
+        $ pin = renpy.input("6-stellige PIN eingeben")
+        if pin == "130578":
+            $ renpy.notify("PIN korrekt")
+            $ ShowScreen("lockerDoorOpen")
+            $ HideScreen("lockerDoorPinpad")
+        else:
+            $ renpy.notify("Falsche PIN")
+            $mussWarten = True
+            $ time = 10
+            $ countdown_title ="Bitte warten..."
+            $ timer_jump = "PinFalschEnde"
+            show screen countdown
+    $ renpy.pause(hard=True)
+
+label PinFalschEnde:
+    $mussWarten = False
+    $ renpy.pause(hard=True)
+
+label brokenMonitorClicked:
+    if foundMonitors:
+        menu:
+            "Monitor reparieren"
+            "Farbbild-Monitor":
+                $ LooseEnergy(20)
+                $ ShowScreen("monitorColor")
+                $inventory.remove(monitor_color)
+            "Schwarz-Weiß-Monitor":
+                $ LooseEnergy(10)
+                $ ShowScreen("monitorSW")
+                $inventory.remove(monitor_sw)
+        $ renpy.notify("Monitor repariert")
+        $ HideScreen("monitorBroken")
+    else:
+        $ renpy.notify("Defekt")
+    $ renpy.pause(hard=True)
+
+label CheckKeyCount:
+    if len(inventory ) == 14:
+        $ ShowScreen("lockerDoorPinpad")
+    $renpy.pause(hard=True)
+
+label MonitorsFound:
+    $foundMonitors = True
+    $ ShowScreen("monitorBroken")
+    $inventory.append(monitor_sw)
+    $inventory.append(monitor_color)
+    $renpy.pause(hard=True)

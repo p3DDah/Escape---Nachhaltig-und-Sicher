@@ -1,0 +1,11 @@
+%%% Datenskandale %%%
+https://www.tagesschau.de/ausland/facebook-ausweitung-skandal-101.html
+https://www.zdf.de/nachrichten/heute/hacking-datenmissbrauch-jahresrueckblick-100.html
+	März -> Office 365
+	August -> Kaspersky
+	September -> Smarthome
+https://www.pcwelt.de/ratgeber/Sicherheit-Die-groessten-Datenschutz-Skandale-der-IT-Geschichte-4976380.html
+
+
+%%% Sicherheitsinnovationen %%%
+https://in-part.com/blog/top-10-cybersecurity-innovations-2018/

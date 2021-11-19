@@ -1,0 +1,103 @@
+label team_1_chapter_4:
+    $ ShowScreen("App_Settings")
+    $ ShowScreen("App_Firefox")
+    $ ShowScreen("App_Edge")
+    $ ShowScreen("App_Chrome")
+    call InitChapter4Vars
+    $ renpy.pause(hard=True)
+
+label InitChapter4Vars:
+    $browserPW = ""
+    $cipher = ""
+    return
+
+label OpenFirefox:
+    if editedSettings:
+        $LooseEnergy(10)
+        $LooseData(10)
+        "Gute Wahl"
+        jump OpenBrowser
+    else:
+        $renpy.notify("Systemfehler. Einstellungen fehlerhaft.")
+    $ renpy.pause(hard=True)
+
+label OpenEdge:
+    if editedSettings:
+        $LooseEnergy(30)
+        $LooseData(40)
+        "Schlechte Wahl, da Edge sehr datenhungrig ist"
+        jump OpenBrowser
+    else:
+        $renpy.notify("Systemfehler. Einstellungen fehlerhaft.")
+    $ renpy.pause(hard=True)
+
+label OpenChrome:
+    if editedSettings:
+        $LooseEnergy(30)
+        $LooseData(40)
+        "Schlechte Wahl, da Chrome sehr datenhungrig ist"
+        jump OpenBrowser
+    else:
+        $renpy.notify("Systemfehler. Einstellungen fehlerhaft.")
+    $ renpy.pause(hard=True)
+
+label OpenBrowser:
+    scene browser_open
+    $ HideScreen("App_Settings")
+    $ HideScreen("App_Firefox")
+    $ HideScreen("App_Edge")
+    $ HideScreen("App_Chrome")
+    "Herzlich Willkommen bei Kursberechnung24.de"
+    scene browser_open_kreuzwort
+    while browserPW.lower() != "eutdchfvuedi":
+        $browserPW = renpy.input("Wie lautet das Lösungswort?")
+        if browserPW.lower() != "eutdchfvuedi":
+            $renpy.notify("Falsches Lösungswort")
+        else:
+            $renpy.notify("Korrekt")
+    scene browser_open_coords
+    "Löse das Cipher-Rästel"
+    "Hinweis 1: Das Lösungswort aus dem Kreuzworträtsel hilft."
+    "Hinweis 2: Das Lösungswort ist in drei Teile geteilt, wobei es je Teil zwei Koordinatenpunkte gibt."
+    "Hinweis 3: Das Passwort ergibt sich aus den Schnittpunkten der Geraden."
+    while cipher != "325365":
+        $cipher = renpy.input("Wie lauten die Koordinaten (6-stellige Zahl)?")
+        if cipher != "325365":
+            $renpy.notify("Leider Falsch")
+        else:
+            $renpy.notify("Korrekt")
+    scene browser_open
+    commander "Super, wir haben nun die Koordinaten für den neuen Kurs. Sehr gut gemacht!"
+    commander "Nun müssen wir diese nur noch an den Maschinenraum übermitteln, sodass unsere Kollegen die Kurskorrektur durchführen können."
+    commander "Hmm ich sehe gerade, es muss einiges übermittelt werden."
+    commander "Per Text wäre es ressourcensparender, dafür aber auch informationsärmer. Per Bild gegenteilig und per Sprache wäre sowohl als auch."
+    commander "Hmm schwierige Entscheidung... Wähle lieber du hihi."
+    menu:
+        "Wie möchtest du die Daten an den Maschinenraum übergeben?"
+        "per Text":
+            $LooseEnergy(10)
+            $LooseData(10)
+            $os_title = "FuNEJVB!"
+        "per Sprache":
+            $LooseEnergy(20)
+            $LooseData(20)
+            $os_title = "uwKRg5un"
+        "per Bild":
+            $LooseEnergy(30)
+            $LooseData(30)
+            $os_title = "0P!&UlZF"
+    $ ShowScreen("os_title_black")
+    call chapter_4_pw_uebermitteln
+    $ HideScreen("os_title_black")
+    jump team_1_chapter_5
+    $ renpy.pause(hard=True)
+
+label chapter_4_pw_uebermitteln:
+    "Übermittle das Passwort zur Koordinatenübertragung an den Maschinenraum."
+    menu:
+        "Hast du das Passwort übermittelt/notiert?"
+        "Ja":
+            pass
+        "Nein":
+            call chapter_4_pw_uebermitteln
+    return

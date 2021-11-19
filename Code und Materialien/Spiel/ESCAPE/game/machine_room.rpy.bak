@@ -1,0 +1,134 @@
+label start_team_2:
+    call InitMRoomVars
+    scene door_machineroom
+    $ ShowScreen("bars")
+    $ ShowScreen("inventory_button")
+    $ ShowScreen("machineroomKeycard")
+    $ ShowScreen("machineRoomPinpad")
+    $ ShowScreen("gotoMachineRoomDoor")
+    $ renpy.pause(hard=True)
+
+label InitMRoomVars:
+    #Strom
+    $ currentep = 200
+    $ maxep = 200
+    #Datenvolumen
+    $ currentdp = 200
+    $ maxdp = 200
+    return
+
+label machineRoomDoorClicked:
+    if doorLocked == True:
+        play sound "audio/door_denied.mp3"
+        "Verschlossen"
+    else:
+        play sound "audio/door_open.mp3"
+        pause 3.0
+        jump machine_room
+    window hide
+    $ renpy.pause(hard=True)
+
+label machineRoomPinpadClicked:
+    if tookKeycard == False:
+        play sound "audio/door_denied.mp3"
+        "Schlüsselkarte benötigt"
+    else:
+        $ doorLocked = False
+        play sound "audio/code_accept.mp3"
+        "Zugang gewährt"
+    window hide
+    $ renpy.pause(hard=True)
+
+default tookWA40 = False
+default tookWA80 = False
+default chooseWA40 = False
+default isResistorInserted = False
+default finishWebBrowser = False
+default finishSystemcheck = False
+default finishKursberechnung = False
+default finishReparieren = False
+
+label machine_room:
+    scene machine_room
+    $ HideScreen("gotoMachineRoomDoor")
+    $ HideScreen("machineRoomPinpad")
+    $ ShowScreen("sicherung_40A")
+    $ ShowScreen("sicherung_80A")
+    $ ShowScreen("generatorCover")
+    image enterprise = Image("Objekte/Maschinenraum/EnterprisePoster_per.png", xalign=0.09, yalign=0.38)
+    show enterprise
+    "Maschinenraum"
+    window hide
+    $ renpy.pause(hard=True)
+
+label generatorCoverClicked:
+    if tookWA40 or tookWA80:
+        $ isResistorInserted = True
+        menu:
+            "Setze bitte die Sicherung in den Generator ein"
+            "Sicherung 40A" if tookWA40:
+                $ LooseEnergy(10)
+                $ chooseWA40 = True
+                commander "Puhh, hoffentlich hält die Sicherung!"
+            "Sicherung 80A" if tookWA80:
+                $ LooseEnergy(20)
+                commander "Gut gemacht!"
+            "Zurück":
+                window hide
+                $ renpy.pause(hard=True)
+        $ HideScreen("generatorCover")
+        $ HideScreen("sicherung_80A")
+        $ HideScreen("sicherung_40A")
+        $ zahnradPasswort = ''
+        commander "Um nun den Strom wieder einzuschalten, benötigen wir ein Passwort! Schau dir doch einmal die Zahnräder auf den Generator an."
+        while zahnradPasswort != '54321':
+            $ zahnradPasswort = renpy.input("Wie lautet das Zugangspasswort")
+            if zahnradPasswort != '54321':
+                "Es scheint nicht richtig zu sein."
+        commander "Sehr gut! Der Strom ist nun wieder vollständig eingeschaltet."
+        commander "Aber mal im Ernst, das Passwort ist nicht wirklich sicher!"
+        "Übermittle folgendes Passwort zum Cockpit: \"7yV9@2Z3\""
+        call machine_pw_uebermitteln
+        window hide
+        $ ShowScreen("computerWand")
+    else:
+        "Dir fehlt das passende Teil"
+    window hide
+    $ renpy.pause(hard=True)
+
+label computerWandClicked:
+    "Willkommen im MaschinenRaumOS"
+
+    menu appChoice:
+        "Welche Software soll gestartet werden?"
+        "Web-Browser" if not finishWebBrowser:
+            $renpy.notify("Browser gestartet")
+            jump computerWandClicked_Browser
+        "Systemcheck" if not finishSystemcheck:
+            $renpy.notify("Systemcheck gestartet")
+            jump computerWandClicked_Systemcheck
+        "Kursberechnung" if not finishKursberechnung:
+            $renpy.notify("Kursberechnung gestartet")
+            jump computerWandClicked_Kursberechnung
+        "Komponenten reparieren" if not finishReparieren and finishSystemcheck:
+            $renpy.notify("Reparieren gestartet")
+            jump computerWandClicked_Reparieren
+        # "Starten der Düsen" if finishReparieren and finishSystemcheck and finishKursberechnung and finishWebBrowser:
+        #     $renpy.notify("Starten der Düsen")
+        #     hide screen computerWand
+        #     jump startDuesen
+        "Zurück":
+            window hide
+            $ renpy.pause(hard=True)
+
+    window hide
+    $ renpy.pause(hard=True)
+
+label machine_pw_uebermitteln:
+    menu:
+        "Hast du das Passwort \"7yV9@2Z3\" notiert/übermittelt?"
+        "Ja":
+            pass
+        "Nein":
+            call machine_pw_uebermitteln
+    return

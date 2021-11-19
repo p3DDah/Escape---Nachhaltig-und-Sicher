@@ -1,0 +1,31 @@
+running ['C:/Users/phili/Desktop/Studium/Bachelor OVGU/Semester 6 (SS2021)/Softwareprojekt/ESCAPE Gitlab/Spiel\\lib\\windows-x86_64\\zsync.exe', '-o', 'C:\\Users\\phili\\Desktop\\Studium\\Bachelor OVGU\\Semester 6 (SS2021)\\Softwareprojekt\\ESCAPE Gitlab\\Spiel\\update\\atom-windows.update.new', '-k', 'C:\\Users\\phili\\Desktop\\Studium\\Bachelor OVGU\\Semester 6 (SS2021)\\Softwareprojekt\\ESCAPE Gitlab\\Spiel\\update\\atom-windows.zsync', '-i', 'C:\\Users\\phili\\Desktop\\Studium\\Bachelor OVGU\\Semester 6 (SS2021)\\Softwareprojekt\\ESCAPE Gitlab\\Spiel\\update\\atom-windows.update', '-i', 'C:\\Users\\phili\\Desktop\\Studium\\Bachelor OVGU\\Semester 6 (SS2021)\\Softwareprojekt\\ESCAPE Gitlab\\Spiel\\update\\atom-windows.update', 'http://update.renpy.org/release/renpy-7.4.10-atom-windows.zsync']
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+running ['C:/Users/phili/Desktop/Studium/Bachelor OVGU/Semester 6 (SS2021)/Softwareprojekt/ESCAPE Gitlab/Spiel\\lib\\windows-x86_64\\zsync.exe', '-o', 'C:\\Users\\phili\\Desktop\\Studium\\Bachelor OVGU\\Semester 6 (SS2021)\\Softwareprojekt\\ESCAPE Gitlab\\Spiel\\update\\sdk.update.new', '-k', 'C:\\Users\\phili\\Desktop\\Studium\\Bachelor OVGU\\Semester 6 (SS2021)\\Softwareprojekt\\ESCAPE Gitlab\\Spiel\\update\\sdk.zsync', '-i', 'C:\\Users\\phili\\Desktop\\Studium\\Bachelor OVGU\\Semester 6 (SS2021)\\Softwareprojekt\\ESCAPE Gitlab\\Spiel\\update\\sdk.update', '-i', 'C:\\Users\\phili\\Desktop\\Studium\\Bachelor OVGU\\Semester 6 (SS2021)\\Softwareprojekt\\ESCAPE Gitlab\\Spiel\\update\\sdk.update', 'http://update.renpy.org/release/renpy-7.4.10-sdk.zsync']
+partfile does not exist
+partfile does not exist
+partfile does not exist
+partfile does not exist
+could not rename file \\?\C:\Users\phili\Desktop\Studium\Bachelor OVGU\Semester 6 (SS2021)\Softwareprojekt\ESCAPE Gitlab\Spiel\launcher\game\fonts\Roboto-Light.ttfR \\?\C:\Users\phili\Desktop\Studium\Bachelor OVGU\Semester 6 (SS2021)\Softwareprojekt\ESCAPE Gitlab\Spiel\launcher\game\fonts\Roboto-Light.ttfTraceback (most recent call last):
+  File "renpy/common/00updater.rpy", line 122, in process_deferred
+    process_deferred_line(l)
+  File "renpy/common/00updater.rpy", line 87, in process_deferred_line
+    os.unlink(fn)
+WindowsError: [Error 32] Der Prozess kann nicht auf die Datei zugreifen, da sie von einem anderen Prozess verwendet wird: u'\\\\?\\C:\\Users\\phili\\Desktop\\Studium\\Bachelor OVGU\\Semester 6 (SS2021)\\Softwareprojekt\\ESCAPE Gitlab\\Spiel\\launcher\\game\\fonts\\Roboto-Light.ttf'

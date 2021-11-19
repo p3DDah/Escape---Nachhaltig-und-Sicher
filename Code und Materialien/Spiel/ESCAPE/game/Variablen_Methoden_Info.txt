@@ -1,0 +1,145 @@
+
+Allgemein:
+	scene ...					Zeige ... Szene an (zu finden in images.rpy)
+	play music					Spiele dauerhafte Hintergrundmusik ab
+	play sound					Spiele kurzen, temporären Sound ab
+	"text"						Zeige Text im Spiel an
+	"text [x] text"					Zeige Variable x im Text an
+	commander "text"				Zeige Monolog vom Kommandeur im Spiel an
+	control "text"					Zeige Monolog von Mission Control im Spiel an
+	pause x						Warte x Sekunden (Tasten können trotzdem noch gedrückt werden)
+	$ x = renpy.input("Anzeigetext")		Usereingaben
+	menu:						Menüanzeige
+		"Anzeigetext"
+		"Auswahltext1":
+		"Auswahltext2":
+	pass						mache nichts
+	jump x						Springe zu Label x
+	label x:					Definiere Untergruppe
+	call x from _call_x(1,2,3...)			Rufe ein bestimmtes Label auf, bei Error einfach eine irgendwas bei _call_x anhängen
+	$ ShowScreen("x")				Zeige Bild x an (Orte: Events.rpy bei game_screens.rpy; Cockpit bei team_1_screens.rpy; Maschinenraum bei team_2_screens.rpy)
+	$ HideScreen("x")				Sollte klar sein
+	$ set_time					Variable zum Bestimmen der Länge des Countdowns
+	$ mussWarten					Variable, sodass der Countdown nicht übersprungen werden kann
+	$ countdown_title				Variable zur Angabe des Countdown-Titels
+	$ timer_jump = "x"				Variable zur Angabe, wohin der Timer nach Beendigung springen soll
+	show screen countdown				Zeige Countdown an
+	window hide					blende aktuelles Fenster aus (wo beispielsweise der Text etc. angezeigt wird)
+	$ InventarCheck_state				Variable, die angibt, ob der Zugriff auf das Inventar erlaubt ist. Somit kann ein ungewolltes Verschwinden von Menüanzeigen etc. vermieden werden
+	$ LooseEnergy(x)				Verliere x Werte an Strom
+	$ LooseData(x)					Verliere x Werte an Datenvolumen	
+	$ inventory.remove(x)				Entferne x aus dem Inventar
+	$ inventory.append(x)				Füge x zum Inventar hinzu
+	ShowScreen("os_title")				Zeige Text an
+	HideScreen("os_title")				Blende Text aus -> Wichtig!: os_title muss "" sein also $ os_title = ""
+	os_title = "x"					Zeige x als Text an
+	
+
+Cockpit:
+	Eingangstür.rpy:
+		$ currentep/cuurentdp			Variablen zur Anagben des Stromes/Datenvolumens
+
+	CP1_Schaltzentrale.rpy:
+		$ CP2_LockerdoorEmpty_state		Variable zur Überprüfung, ob Monitore aus dem Schrank genommen worden sind
+		$ Lockerdoor_state			Variable zur Überprüfung, ob Schrank offen oder zu ist
+		$ foundMonitors				Variable, dass die Monitore eingesammelt wurden
+		$ MonitorColor_state			Variable zur Angabe, dass der Farbmonitor gewählt wurde
+		$ MonitorBW_state			Variable zur Angabe, dass der Monochrommonitor gewählt wurde
+	
+	CP2_Freigabe.rpy:
+		label Computerszene			Hauptlabel, um auf den Monitor zurückzukommen. Überprüft alle benötigten Variablen, ob sie angezeigt werden oder nicht.
+		CP2_Computer_state			gibt an, ob Computer gerade an oder aus
+		isLinux					wurde Linux ausgewählt
+		isWindows				wurde Windows ausgewählt
+		CP2_OsWahl_state			Apps dürfen angezeigt werden, Os wurde gewählt und angepasst
+		Keyboard_state				Keyboard wurde repariert
+		CP2_KeyboardBroken_state		Keyboard noch kaputt
+		key_(Taste)_state			(Taste) wurde aufgehoben
+		CP2_tmp(Taste)_state			(Taste) wurde ausgewählt
+		CP2_tmpText				Eingabetext
+		repairedKeyboard			Keyboard wurde repariert
+		CP2_OpenOs_state			Strom noch nicht an
+		CP2_OS_state				noch kein OS gewählt
+		CP2_Verbindung_state			noch keine Verbindung zum Maschinenraum
+		encryptionChecker			dient zur Überprüfung in CP6_DüsenstartCP.cpy, ob Aktion ausgeführt wird
+
+	CP3_Kursberechnung.rpy:
+		CP3_BrowserWahl_state			noch keinen Browser ausgewählt
+		CP3_Kursberechnung24_state		Kursberechnung noch nicht beendet
+		CP3_Browser				gibt an, welcher Browser ausgewählt wurde
+		CP3_Kreuz_state				Kreuzworträtsel noch nicht abgeschlossen
+		CP3_Cipher_state			Cipher-Rätsel noch nicht beendet
+
+	CP4_Abwurfeinstellung.rpy:
+		CP4_AbwurfPartI_state			Einstellungen der Abwurfapp noch nicht eingestellt
+		CP4_EarthImage20_state			überprüft ob das Earth Image angezeigt werden soll im 20 Sekunden Countdown
+		CP4_EarthImage60_state			überprüft ob das Earth Image angezeigt werden soll im 60 Sekunden Countdown
+		CP4_AbwurfPartII_state			Aktivierung des Abwurfs noch nicht abgeschlossen
+		CP4_Spiegel_state			analoges Spiegelrätsel noch nicht abgeschlossen
+		
+	CP5_FunkReparatur.rpy:
+		CP5_FunkAppNo_state			Test des Funkgerätes noch nicht abgeschlossen
+		CP5_continue_state			Variable dient zum Springen zum Turbulenzen Label
+		CP5_FunkAppYes_state			Funkgerät wurde repariert
+		CP5_VarSelect_state			Mindestens ein Reparaturteil wurde ausgewählt
+		CP5_KommTest_state			Kommunikationstest noch nicht erfolgreich
+		CP5_StandortTest_state			Standorttest noch nicht erfolgreich
+		usedMic, usedCam etc.			Mikrofon wurde im Inventar ausgewählt
+		CP5_UsedMic, etc.			Mikrofon wurde im Menü ausgewählt
+
+	cockpit_room.rpy:
+		FirstTime_state				überprüft, ob man das Spiel gerade erst gestartet hat
+		Lockerdoor_state			Schrank ist offen
+		CP2_LockerdoorEmpty_state		Monitore wurden entnommen
+		
+
+Maschinenraum:
+		CP6_UnlockDoor_state			wenn größer als 4 (alle benötigten Aufgaben abgeschlossen), dann zeige letzte Nachricht an
+	CP1_Notstrom.rpy:
+		finishKursberechnung			Kursberechnung wurde noch nicht abgeschlossen
+		finishWebBrowser			Raumschiffinformationen wurden nicht beschafft
+		finishSystemcheck			Systemcheck wurde noch nicht abgeschlossen
+		finishReparieren			Reparatur wurde noch nicht abgeschlossen
+	
+	CP2_Infobeschaffung.rpy:
+		CP2_browserChoice_state			Suchmaschine wurde noch nicht ausgewählt
+		CP2_browserConfig_state			Suchmaschine wurde noch nicht konfiguriert
+		CP2_browserFrage1_state			Frage 1/2/3/4 wurde noch nicht beantwortet
+
+	CP3_Bauplan_state.rpy:
+		CP3_Bauplan_state			Bauplan wurde noch nicht entschlüsselt
+		CP3_CookieChoice_state1			Alle Cookies wurden akzeptiert
+		CP3_CookieChoice_state2			Cookies wurden eingestellt
+		CP3_Systemcheck_state			Systemcheck wurde noch nicht beendet
+
+	CP4_Kurskorrektur.rpy:
+		CP4_CalcPass_state			Informationen aus Cockpit noch nicht erhalten
+		CP4_CalcPassText_state			Text Informationen von Cockpit empfangen
+		CP4_CalcPassSound_state			Sprach Information von Cockpit empfangen
+		CP4_CalcPassVideo_state			Video Information von Cockpit empfangen
+
+	CP5_Reparatur_Antrieb.rpy:
+		CP5_Reparatur_state			Düsenantrieb noch nicht repariert
+		
+		
+		
+		
+		
+		
+		
+		
+			
+		
+		
+		
+		
+		
+
+		
+		
+
+		
+	
+	
+	
+	

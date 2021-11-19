@@ -1,0 +1,9 @@
+﻿I'm sorry, but errors were detected in your script. Please correct the
+errors listed below, and try again.
+
+
+File "game/scripts/events.rpy", line 79: is not terminated with a newline. (Check strings and parenthesis.)
+            sound_pieces = ["<silence {0}>audio/sounds (1).mp3".format(renpy.random.randint(10,15)),
+
+Ren'Py Version: Ren'Py 7.4.4.1439
+Wed Oct 13 14:06:57 2021

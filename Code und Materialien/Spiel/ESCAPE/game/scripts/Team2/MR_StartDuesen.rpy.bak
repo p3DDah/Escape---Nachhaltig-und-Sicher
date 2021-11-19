@@ -1,0 +1,206 @@
+label startDuesen:
+    "Tür ist verschlossen"
+
+    label startDuesenDoorPasswort_label:
+    $ startDuesenDoorPasswort = ""
+    $ startDuesenDoorPasswort = renpy.input("Bitte geben Sie das Passwort aus dem Cockpit ein")
+
+    if startDuesenDoorPasswort.lower() != "xchat":
+        menu:
+            "Erneut versuchen":
+                jump startDuesenDoorPasswort_label
+            "Zurück":
+                window hide
+                $ renpy.pause(hard=True)
+    else:
+        pass
+
+    $ HideScreen("endDoor_mr")
+    $ ShowScreen("Sicherheitsprotokoll")
+    call MR_Frage1
+    call MR_Frage2
+    call MR_Frage3
+    call MR_Frage4
+    call MR_Frage5
+    call MR_Frage6
+    call MR_Frage7
+    call MR_Frage8
+    call MR_Frage9
+    call MR_Frage10
+    $title = ""
+    $ HideScreen("Sicherheitsprotokoll")
+    call MR_CheckAntworten
+    label MR_allesRichtig:
+    "Alle Fragen wurden richtig beantwortet!"
+    "Notiere und übermittle den Schlüssel an das Cockpit"
+    $ ShowScreen("os_title")
+    $os_title = "Em#rRYfj"
+    call startDuesen_pw_uebermitteln
+    $ HideScreen("os_title")
+    call startDuesen_pw_eingeben
+    commander "Wir haben alles geschafft! Hoffentlich reichen unsere Ressourcen noch für die Landung aus!"
+    scene KapselFalling
+    pause 4.0
+    if currentep >= 80 and currentdp >= 80:
+        jump GoodEnding
+    else:
+        commander "Ohhhhh nein, wir werden es nicht schaffen! Es war schön euch kennengelernt zu haben!"
+        jump BadEnding
+    $ renpy.pause(hard=True)
+
+label MR_Frage1:
+    $title = "Frage 1\nWie sollten Apps konfiguriert werden? (12)"
+    $AntwortMR_Frage1 = renpy.input("Gib deine Antwort ein.")
+    return
+
+label MR_Frage2:
+    $title = "Frage 2\nWelche Apps werden bevorzugt? (6)"
+    $AntwortMR_Frage2 = renpy.input("Gib deine Antwort ein.")
+    return
+
+label MR_Frage3:
+    $title = "Frage 3\nNenne eine deutsche, datensparsame Suchmaschine! (7)"
+    $AntwortMR_Frage3 = renpy.input("Gib deine Antwort ein.")
+    return
+
+label MR_Frage4:
+    $title = "Frage 4\nWelchen Messenger sollte man vermeiden? (8)"
+    $AntwortMR_Frage4 = renpy.input("Gib deine Antwort ein.")
+    return
+
+label MR_Frage5:
+    $title = "Frage 5\nZu was dienen Firewalls? (9)"
+    $AntwortMR_Frage5 = renpy.input("Gib deine Antwort ein.")
+    return
+
+label MR_Frage6:
+    $title = "Frage 6\nVor was wird man durch Intrusion Prevention Systeme geschützt? (9)"
+    $AntwortMR_Frage6 = renpy.input("Gib deine Antwort ein.")
+    return
+
+label MR_Frage7:
+    $title = "Frage 7\nNicht benötigte Zugriffe einer App sollten ... werden! (9)"
+    $AntwortMR_Frage7 = renpy.input("Gib deine Antwort ein.")
+    return
+
+label MR_Frage8:
+    $title = "Frage 8\nNenne einen datensparsamen Messenger! (6)"
+    $AntwortMR_Frage8 = renpy.input("Gib deine Antwort ein.")
+    return
+
+label MR_Frage9:
+    $title = "Frage 9\nWelche Konsequenzen können sich durch die unkontrollierte Datenpreisgebung ergeben? (13)"
+    $AntwortMR_Frage9 = renpy.input("Gib deine Antwort ein.")
+    return
+
+label MR_Frage10:
+    $title = "Frage 10\nFindest du, dass du nun ein besseres Gespür für mehr Sicherheit\nund Nachhaltigkeit aufbauen konntest?"
+    menu:
+        "Ja":
+            $AntwortMR_Frage10 = "Ja"
+        "Nein":
+            $AntwortMR_Frage10 = "Nein"
+    return
+
+label MR_CheckAntworten:
+    $ MR_CheckFragen = True
+    if AntwortMR_Frage1.lower() == "datensparsam":
+        "1. Frage richtig"
+    else:
+        $ MR_CheckFragen = False
+        "1. Frage falsch"
+
+    if AntwortMR_Frage2.lower() == "lokale":
+        "2. Frage richtig"
+    else:
+        $ MR_CheckFragen = False
+        "2. Frage falsch"
+
+    if AntwortMR_Frage3.lower() == "metager":
+        "3. Frage richtig"
+    else:
+        $ MR_CheckFragen = False
+        "3. Frage falsch"
+
+    if AntwortMR_Frage4.lower() == "whatsapp":
+        "4. Frage richtig"
+    else:
+        $ MR_CheckFragen = False
+        "4. Frage falsch"
+
+    if AntwortMR_Frage5.lower() == "filterung":
+        "5. Frage richtig"
+    else:
+        $ MR_CheckFragen = False
+        "5. Frage falsch"
+
+    if AntwortMR_Frage6.lower() == "schadcode":
+        "6. Frage richtig"
+    else:
+        $ MR_CheckFragen = False
+        "6. Frage falsch"
+
+    if AntwortMR_Frage7.lower() == "blockiert":
+        "7. Frage richtig"
+    else:
+        $ MR_CheckFragen = False
+        "7. Frage falsch"
+
+    if AntwortMR_Frage8.lower() == "signal":
+        "8. Frage richtig"
+    else:
+        $ MR_CheckFragen = False
+        "8. Frage falsch"
+
+    if AntwortMR_Frage9.lower() == "profilbildung":
+        "9. Frage richtig"
+    else:
+        $ MR_CheckFragen = False
+        "9. Frage falsch"
+
+    if AntwortMR_Frage10.lower() == "ja":
+        "10. Frage richtig"
+    else:
+        $ MR_CheckFragen = False
+        "10. Frage falsch"
+
+    if MR_CheckFragen:
+        jump MR_allesRichtig
+    else:
+        jump startDuesen_ErrorCountdown_Fragen
+
+label startDuesen_pw_uebermitteln:
+    "Übermittle das Passwort für den Fragebogen an das Cockpit."
+    menu:
+        "Hast du das Passwort übermittelt?"
+        "Ja":
+            $ HideScreen("os_title")
+        "Nein":
+            call startDuesen_pw_uebermitteln
+    return
+
+label startDuesen_pw_eingeben:
+    "Zum Abgleich der Startsequenz muss das Passwort aus dem Cockpit eingegeben werden."
+    $cockpit_pw = renpy.input("Schlüssel eingeben")
+    if cockpit_pw == "Tyz36Scx":#"Tyz36Scx":
+        $renpy.notify("Startsequenz freigegeben")
+        return
+    else:
+        jump startDuesen_ErrorCountdown
+    return
+
+label startDuesen_ErrorCountdown_Fragen:
+    $renpy.notify("Nicht alle Fragen richtig")
+    $ time = 10
+    $ countdown_title ="Bitte warten..."
+    $ timer_jump = "startDuesen"
+    show screen countdown
+    $ renpy.pause(hard=True)
+
+label startDuesen_ErrorCountdown:
+    $renpy.notify("Falscher Schlüssel")
+    $ time = 10
+    $ countdown_title ="Bitte warten..."
+    $ timer_jump = "startDuesen_pw_eingeben"
+    show screen countdown
+    $ renpy.pause(hard=True)

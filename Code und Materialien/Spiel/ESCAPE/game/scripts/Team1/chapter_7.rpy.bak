@@ -1,0 +1,184 @@
+label team_1_chapter_7:
+    $ HideScreen("Check_Encryption_Title")
+    if encryptionChecker == False:
+        "Du hast deine Daten nicht ordnungsgemäß verschlüsselt,
+        sodass Aliens unsere Nachrichten abhören und auf unsere Systeme zugreifen konnten."
+        "Dadurch ist der Strom und Datenverbrauch enorm gestiegen!"
+        $ LooseEnergy(40)
+        $ LooseData(30)
+    $ ShowScreen("Sicherheitsprotokoll")
+    call Frage1
+    call Frage2
+    call Frage3
+    call Frage4
+    call Frage5
+    call Frage6
+    call Frage7
+    call Frage8
+    call Frage9
+    call Frage10
+    $title = ""
+    $ HideScreen("Sicherheitsprotokoll")
+    $ HideScreen("keyboardDummy")
+    $ ShowScreen("os_title")
+    $os_title = "Tyz36Scx"
+    call chapter_7_pw_uebermitteln
+    $ HideScreen("os_title")
+    call chapter_7_pw_eingeben
+    call CheckRessourcen
+    scene KapselFalling
+    pause 4.0
+    if WinGame:
+        jump GoodEnding
+    else:
+        commander "Oh nein, wir haben zu viel Ressourcen verbraucht! Das ist unser Ende ..."
+        jump BadEnding
+
+    $ renpy.pause(hard=True)
+
+label Frage1:
+    $title = "Frage 1\nWelches Betriebssystem ist datensparsam?"
+    menu:
+        "Windows":
+            commander "Die Antwort ist leider nicht korrekt. Bitte denke noch einmal nach."
+            call Frage1
+        "Linux":
+            commander "Sehr gut"
+        "iOS":
+            commander "Die Antwort ist leider nicht korrekt. Bitte denke noch einmal nach."
+            call Frage1
+    return
+
+label Frage2:
+    $title = "Frage 2\nWas sollte bei einem Browser entfernt werden?"
+    $AntwortFrage2 = renpy.input("Gib deine Antwort ein.")
+    if AntwortFrage2.lower() != "sslkeylogfile":
+        commander "Die Antwort ist leider nicht korrekt. Bitte denke noch einmal nach."
+        call Frage2
+    else:
+        commander "Prima"
+    return
+
+label Frage3:
+    $title = "Frage 3\nWomit kann man Videos datensparsam anschauen?"
+    $AntwortFrage3 = renpy.input("Gib deine Antwort ein.")
+    if AntwortFrage3.lower() != "proxy":
+        commander "Die Antwort ist leider nicht korrekt. Bitte denke noch einmal nach."
+        call Frage3
+    return
+
+label Frage4:
+    $title = "Frage 4\nWie lautet eine gängige Verschlüsselung beim Internetsurfen?"
+    $AntwortFrage4 = renpy.input("Gib deine Antwort ein.")
+    if AntwortFrage4.lower() != "https":
+        commander "Die Antwort ist leider nicht korrekt. Bitte denke noch einmal nach."
+        call Frage4
+    return
+
+label Frage5:
+    $title = "Frage 5\nIst HTTP für Verschlüsselung geeignet?"
+    menu:
+        "Ja":
+            commander "Die Antwort ist leider nicht korrekt. Bitte denke noch einmal nach."
+            call Frage5
+        "Nein":
+            commander "Richtig"
+    return
+
+label Frage6:
+    $title = "Frage 6\nWie viele Zeichen sollte ein Passwort mindestens haben?"
+    menu:
+        "1":
+            commander "Die Antwort ist leider nicht korrekt. Bitte denke noch einmal nach."
+            call Frage6
+        "16":
+            commander "Sehr gut."
+        "42":
+            commander "Auch wenn 42 die Antwort auf alle Fragen ist, so ist sie hier doch leider falsch. Bitte denke noch einmal nach."
+            call Frage6
+    return
+
+label Frage7:
+    $title = "Frage 7\nWie oft sollte man ein Passwort wiederverwenden?"
+    menu:
+        "Einmal":
+            commander "Sehr gut. Passwörter sollten nicht wiederverwendet werden, da sonst alle deine Daten mit nur einem Passwort zugänglich sind."
+        "Beliebig oft":
+            commander "Die Antwort ist leider nicht korrekt. Bitte denke noch einmal nach."
+            call Frage7
+        "Egal":
+            commander "Das sollte dir nicht egal sein. Bitte denke noch einmal nach."
+            call Frage7
+    return
+
+label Frage8:
+    $title = "Frage 8\nWelche sozialen Netzwerke sollte man besser vermeiden?"
+    menu:
+        "Whatsapp":
+            $AntwortFrage8 = "Whatsapp"
+        "Facebook":
+            $AntwortFrage8 = "Facebook"
+        "Twitter":
+            $AntwortFrage8 = "Twitter"
+        "Alle":
+            pass
+    return
+
+label Frage9:
+    $title = "Frage 9\nWelche Suchmaschine ist datensparsam?"
+    menu:
+        "Lite.qwant.com":
+            commander "Sehr gut."
+        "Google.com":
+            commander "Die Antwort ist leider nicht korrekt. Bitte denke noch einmal nach."
+            call Frage9
+        "Yahoo.com":
+            commander "Die Antwort ist leider nicht korrekt. Bitte denke noch einmal nach."
+            call Frage9
+        "DuckDuckGo.com":
+            commander "Prima"
+    return
+
+label Frage10:
+    $title = "Frage 10\nFindest du, dass du nun ein besseres Gespür für mehr Sicherheit\nund Nachhaltigkeit aufbauen konntest?"
+    menu:
+        "Ja":
+            $AntwortFrage10 = "Ja"
+        "Nein":
+            $AntwortFrage10 = "Nein"
+    return
+
+label CheckRessourcen:
+    if currentep >= 90 and currentdp >= 90:
+        $WinGame = True
+    else:
+        $WinGame = False
+    return
+
+label chapter_7_pw_uebermitteln:
+    "Übermittle das Passwort für den Fragebogen an den Maschinenraum."
+    menu:
+        "Hast du das Passwort übermittelt?"
+        "Ja":
+            $ HideScreen("os_title")
+        "Nein":
+            call chapter_7_pw_uebermitteln
+    return
+
+label chapter_7_pw_eingeben:
+    "Zum Abgleich der Startsequenz muss das Passwort aus dem Maschinenraum eingegeben werden."
+    $mr_pw = renpy.input("Schlüssel eingeben")
+    if mr_pw == "Em#rRYfj":
+        $renpy.notify("Startsequenz freigegeben")
+        return
+    else:
+        jump chapter_7_ErrorCountdown
+    return
+
+label chapter_7_ErrorCountdown:
+    $renpy.notify("Falscher Schlüssel")
+    $ time = 10
+    $ countdown_title ="Bitte warten..."
+    $ timer_jump = "chapter_7_pw_eingeben"
+    show screen countdown
+    $ renpy.pause(hard=True)

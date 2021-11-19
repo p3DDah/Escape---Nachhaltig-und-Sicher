@@ -1,0 +1,27 @@
+﻿I'm sorry, but an uncaught exception occurred.
+
+While running game code:
+  File "game/scripts/events.rpy", line 92, in script
+    $ renpy.random.shuffle(sound_pieces)
+  File "game/scripts/events.rpy", line 92, in <module>
+    $ renpy.random.shuffle(sound_pieces)
+TypeError: 'unicode' object does not support item assignment
+
+-- Full Traceback ------------------------------------------------------------
+
+Full traceback:
+  File "game/scripts/events.rpy", line 92, in script
+    $ renpy.random.shuffle(sound_pieces)
+  File "renpy/ast.py", line 922, in execute
+    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
+  File "renpy/python.py", line 2218, in py_exec_bytecode
+    exec(bytecode, globals, locals)
+  File "game/scripts/events.rpy", line 92, in <module>
+    $ renpy.random.shuffle(sound_pieces)
+  File "/home/tom/ab/renpy-build/tmp/install.linux-x86_64/lib/python2.7/random.py", line 293, in shuffle
+TypeError: 'unicode' object does not support item assignment
+
+Windows-10-10.0.22000
+Ren'Py 7.4.4.1439
+OER ESCAPE 1.0
+Wed Oct 13 14:03:30 2021

@@ -1,0 +1,42 @@
+label team_1_chapter_1:
+    call InitVars
+    scene door_cockpit
+    $ ShowScreen("bars")
+    $ ShowScreen("cockpitKeycard")
+    $ ShowScreen("inventory_button")
+    $ ShowScreen("cockpitDoorPinpad")
+    $ ShowScreen("gotoCockpitDoor")
+    $ renpy.pause(hard=True) 
+
+#Vorraum
+label cockpitDoorClicked:
+    if doorLocked == True:
+        play sound "audio/door_denied.mp3"
+        $ renpy.notify("Verschlossen")
+    else:
+        play sound "audio/door_open.mp3"
+        pause 3.0
+        jump team_1_chapter_2
+    $ renpy.pause(hard=True) 
+
+label cockpitPinpadClicked:
+    if tookKeycard == False:
+        play sound "audio/door_denied.mp3"
+        $ renpy.notify("Schlüsselkarte benötigt")
+    else:
+        $ doorLocked = False
+        play sound "audio/code_accept.mp3"
+        $ renpy.notify("Zugang gewährt")
+    $ renpy.pause(hard=True) 
+    
+label InitVars:
+    $ foundMonitors = False
+    $ repairedKeyboard = False
+    $ foundAllKeys = False
+    #Strom
+    $ currentep = 300
+    $ maxep = 300
+    #Datenvolumen
+    $ currentdp = 300
+    $ maxdp = 300
+    return

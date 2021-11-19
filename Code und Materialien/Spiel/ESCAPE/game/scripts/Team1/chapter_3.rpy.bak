@@ -1,0 +1,338 @@
+label team_1_chapter_3:
+    scene computer_off
+    $ HideScreen("monitorSW")
+    $ HideScreen("monitorColor")
+    $ ShowScreen("keyboardBroken")
+    call InitChapter3Vars
+    $ renpy.pause(hard=True)
+
+label InitChapter3Vars:
+    $ editedSettings = False
+    $ enteredMonitorPW = ""
+    $ encryptionKorrekt = False
+    $ firewall = False
+    $ antivir = False
+    $ dasi = False
+    $ isLinux = False
+    $ mussWarten = False
+    return
+
+label keyboardBrokenClicked:
+    if mussWarten:
+        $renpy.notify("Bitte warten")
+        $ renpy.pause(hard=True)
+    else:
+        $ buttonPW = renpy.input("Tippe die Knopfbuchstaben in der richtigen Reihenfolge ein!");
+        if buttonPW.lower() == "linux":
+            $renpy.notify("Passwort korrekt")
+            $ repairedKeyboard = True
+            $ renpy.notify("Knöpfe eingesetzt")
+            $ HideScreen("keyboardBroken")
+            $ ShowScreen("keyboardNormal")
+        else:
+            $mussWarten = True
+            $renpy.notify("Leider falsch")
+            $ time = 10
+            $ timer_range = 10
+            $ countdown_title ="Bitte warten..."
+            $ timer_jump = "KnopfTimerEnde"
+            show screen countdown
+            $ renpy.pause(hard=True)
+    $ renpy.pause(hard=True)
+
+label KnopfTimerEnde:
+    $mussWarten = False
+    jump keyboardBrokenClicked
+    return
+
+label keyboardClicked:
+    scene computer_on
+    $ HideScreen("keyboardNormal")
+    $ ShowScreen("keyboardDummy")
+    call OpenCockpitOS
+    $ HideScreen("keyboardDummy")
+    $ ShowScreen("keyboardNormal")
+    scene computer_off
+    $ renpy.pause(hard=True)
+
+label CockpitOSTimerEnde:
+    $mussWarten = False
+    jump OpenCockpitOS
+    return
+
+label OpenCockpitOS:
+    if mussWarten:
+        $renpy.notify("Bitte warten")
+        $ renpy.pause(hard=True)
+    else:
+        "Um den Computer starten zu können, benötigst du das Passwort aus dem Maschinenraum."
+        while enteredMonitorPW != "7yV9@2Z3":
+            $ enteredMonitorPW = renpy.input("Passwort eingeben")
+            if enteredMonitorPW != "7yV9@2Z3":
+                $renpy.notify("Falsches Passwort")
+                $ time = 10
+                $ countdown_title ="Bitte warten..."
+                $ timer_jump = "CockpitOSTimerEnde"
+                show screen countdown
+                $ renpy.pause(hard=True)
+            if enteredMonitorPW == "7yV9@2Z3":
+                "Der Strom ist wieder an"
+    $renpy.notify("Herzlich Willkommen im CockpitOS")
+    scene computer_on_select
+    $ ShowScreen("choose_OS")
+    $ ShowScreen("os_title")
+    $os_title = "Betriebssystem wählen"
+    menu:
+        "Windows 10":
+            $ LooseEnergy(20)
+            $ LooseData(20)
+            $os_title = ""
+            $ HideScreen("choose_OS")
+            scene computer_boot_windows
+            pause 3.0
+            scene computer_windows_on
+            jump prepareWindoof
+            #jump PrepareDesktop
+        "Linux":
+            $ LooseEnergy(10)
+            $ LooseData(10)
+            $os_title = ""
+            $ isLinux = True
+            $ HideScreen("choose_OS")
+            scene computer_boot_linux_01
+            pause 1.0
+            scene computer_boot_linux_02
+            pause 1.0
+            scene computer_boot_linux_03
+            pause 1.0
+            scene computer_boot_linux_04
+            pause 1.0
+            scene computer_linux_on
+            jump PrepareDesktop
+        "Ausschalten":
+            $ HideScreen("choose_OS")
+    return
+
+label prepareWindoof:
+    "Bevor du mit Windows starten kannst, musst du noch einige Einstellungen treffen!"
+    $os_title = "Mikrofonzugriff erlauben?"
+    $WinCounter = 0
+    menu:
+        "Erlauben":
+            $ WinMic = True
+            $WinCounter += 1
+            $renpy.notify("Mikrofon aktiv")
+            "Schlechte Wahl"
+
+        "Verbieten":
+            $ WinMic = False
+            $renpy.notify("Mikrofon inaktiv")
+            "Gute Wahl"
+
+    $os_title = "Kamerazugriff erlauben?"
+    menu:
+        "Erlauben":
+            $ WinCam = True
+            $WinCounter += 1
+            $renpy.notify("Kamera aktiv")
+            "Schlechte Wahl"
+        "Verbieten":
+            $ WinCam = False
+            $renpy.notify("Kamera inaktiv")
+            "Gute Wahl"
+
+    $os_title = "Erhebung von Telemetriedaten?"
+    menu:
+        "Erlauben":
+            $ WinTele = True
+            $WinCounter += 1
+            $renpy.notify("Erhebung aktiv")
+            "Schlechte Wahl"
+        "Verbieten":
+            $ WinTele = False
+            $renpy.notify("Erhebung inaktiv")
+            "Gute Wahl"
+
+    $os_title = "Clouddienste erlauben?"
+    menu:
+        "Erlauben":
+            $ WinClou = True
+            $WinCounter += 1
+            $renpy.notify("Clouddienste aktiv")
+            "Schlechte Wahl"
+        "Verbieten":
+            $ WinClou = False
+            $renpy.notify("Clouddienste inaktiv")
+            "Gute Wahl"
+
+    $os_title = "Spracherkennung erlauben?"
+    menu:
+        "Erlauben":
+            $ WinDet = True
+            $WinCounter += 1
+            $renpy.notify("Spracherkennung aktiv")
+            "Schlechte Wahl"
+        "Verbieten":
+            $ WinDet = False
+            $renpy.notify("Spracherkennung inaktiv")
+            "Gute Wahl"
+
+    $os_title = ""
+    if WinCounter > 3:
+        $ LooseEnergy(30)
+        $ LooseData(50)
+        jump PrepareDesktop
+    else :
+        if WinCounter > 0:
+            $ LooseEnergy(WinCounter*10)
+            $ LooseData(WinCounter*10)
+            jump PrepareDesktop
+        else:
+            jump PrepareDesktop
+
+label PrepareDesktop:
+    $ ShowScreen("App_Settings")
+    $ ShowScreen("App_Firefox")
+    $ ShowScreen("App_Edge")
+    $ ShowScreen("App_Chrome")
+    $ renpy.pause(hard=True)
+
+label EditSettings:
+    if editedSettings:
+        $renpy.notify("Einstellungen bereits gesetzt")
+        jump team_1_chapter_4
+    else:
+        $ editedSettings = True
+        $renpy.notify("Einstellungen")
+        $ https = False
+        $ HideScreen("App_Settings")
+        $ HideScreen("App_Firefox")
+        $ HideScreen("App_Edge")
+        $ HideScreen("App_Chrome")
+        "Du bist dabei, über einen Satelliten eine Verbindung zum Maschinenraum herzustellen."
+        $os_title = "Wie soll die Verbindung verschlüsselt werden?"
+        menu:
+            "HTTPS":
+                $ https = True
+                $ LooseEnergy(20)
+                $ LooseData(20)
+                $ encryptionChecker = False
+                "Ein sicheres Verbindungsprotokoll wurde ausgewählt."
+                while encryptionKorrekt == False:
+                    $os_title = "Wähle einen sicheren Verbindungsschlüssel! Bitte merken/notieren!"
+                    menu:
+                        "MAX!B3N":
+                            "Passwörter, die Namen enthalten, sind leichter knackbar!"
+                            $ encryptionKorrekt = True
+                        "1E05!97&":
+                            "Passwörter, die (d)ein Geburtsdatum enthalten, sind leichter knackbar!"
+                            $ encryptionKorrekt = True
+                        "2T,eW.Ü!":
+                            #Richtiger weg
+                            $ encryptionKorrekt = True
+                            $ encryptionChecker = True
+                        "pa$$word":
+                            "Dieses und ähnliche \"Passwörter\" NIE benutzen"
+                            $ encryptionKorrekt = True
+                $ HideScreen("choose_connectionKey")
+            "HTTP":
+                $ LooseEnergy(10)
+                $ LooseData(10)
+                $ encryptionChecker = True
+                $ HideScreen("choose_connection")
+                "Ein unsicheres Verbindungsprotokoll wurde ausgewählt."
+
+        "Du möchtest wissen, ob deine Passwörter sicher sind?"
+        "Notiere dir die Seite {b}https://checkdeinpasswort.de{\b}!"
+        jump SystemCheck
+    return
+
+label SystemCheck:
+    "Du hast dich erfolgreich mit dem Maschinenraum verbunden!"
+    commander "Der Maschinenraum hat mir gemeldet, dass sie für den Systemcheck unsere Freigabe benötigen."
+    "Für die sichere Freigabe müssen vorher einige Einstellungen getroffen werden"
+    $SysCounter = 0
+    $os_title = "Firewall"
+    menu:
+        "Aktivieren":
+            $ firewall = True
+            $renpy.notify("Firewall aktiv")
+            "Gute Wahl"
+        "Deaktivieren":
+            $ firewall = False
+            $renpy.notify("Firewall inaktiv")
+            $SysCounter += 1
+            "Schlechte Wahl"
+
+    $os_title = "Virenschutz"
+    menu:
+        "Aktivieren":
+            $ antivir = True
+            $renpy.notify("Virenschutz aktiv")
+            "Gute Wahl"
+        "Deaktivieren":
+            $ antivir = False
+            $renpy.notify("Virenschutz inaktiv")
+            $SysCounter += 1
+            "Schlechte Wahl"
+
+    $os_title = "Datensicherung"
+    menu:
+        "Aktivieren":
+            $ dasi = True
+            $renpy.notify("Datensicherung aktiv")
+            $SysCounter += 1
+            "Schlechte Wahl, da diese in diesem Fall nicht benötigt wird"
+        "Deaktivieren":
+            $ dasi = False
+            $renpy.notify("Datensicherung inaktiv")
+            "Gute Wahl, da diese in diesem Fall nicht benötigt wird"
+    "HTTPS:[https] \n Firewall: [firewall] \n Virenschutz: [antivir] \n Datensicherung: [dasi]"
+    $os_title = ""
+
+    if SysCounter > 0:
+        $ LooseEnergy(SysCounter*10)
+        $ LooseData(SysCounter*10)
+    else:
+        $ LooseEnergy(10)
+        $ LooseData(10)
+
+    #if firewall==True and antivir==True and https==True and dasi==False:
+    #    $ LooseEnergy(10)
+    #    $ LooseData(10)
+    #else:
+    #    $ LooseEnergy(20)
+    #    $ LooseData(20)"""
+
+    commander "Sehr schön, die Freigabe wurde erteilt. Ich übermittle nun das Passwort an den Maschinenraum."
+    "Auf welche Weise möchtest du das Passwort an den Maschinenraum übermitteln?"
+    $os_title = "Übertragungsart"
+    menu:
+        "per Textnachricht":
+            $ LooseEnergy(10)
+            $ LooseData(10)
+            commander "Eine Textnachricht sollte völlig ausreichend sein."
+        "per Sprachnachricht":
+            $ LooseEnergy(20)
+            $ LooseData(20)
+            commander "Hmm so viel Daten und Strom für ein Passwort? Nun gut."
+        "per Bildnachricht":
+            $ LooseEnergy(30)
+            $ LooseData(30)
+            commander "Hmm so viel Daten und Strom für ein Passwort? Nun gut."
+
+    $os_title = "5iRDAPLF"
+    call chapter_3_pw_uebermitteln
+    window hide
+    jump team_1_chapter_4
+    return
+
+label chapter_3_pw_uebermitteln:
+    "Gebe das Passwort zur Systemfreigabe an den Maschinenraum weiter."
+    menu:
+        "Hast du das Passwort notiert/übermittelt?"
+        "Ja":
+            $ HideScreen("os_title")
+        "Nein":
+            call chapter_3_pw_uebermitteln
+    return

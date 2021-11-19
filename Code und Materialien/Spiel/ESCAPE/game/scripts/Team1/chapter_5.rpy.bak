@@ -1,0 +1,141 @@
+label team_1_chapter_5:
+    if isLinux:
+        scene computer_linux_on
+    else :
+        scene computer_windows_on
+    $ ShowScreen("App_Abwurf_Settings")
+    call InitChapter5Vars
+    $ renpy.pause(hard=True)
+
+label InitChapter5Vars:
+    $mic = False
+    $cam = False
+    $wlan = False
+    $gps = False
+    $abwurfPW = ""
+    $SatPoss = False
+    return
+
+label OpenAbwurfSettings:
+    $ ShowScreen("App_Abwurf_Settings_Title")
+    $ HideScreen("App_Abwurf_Settings")
+    commander "Es wird Zeit den automatischen Abwurf der Raumsonden einzustellen! Nur so können wir sicher landen!"
+    commander "Die App zum Bestimmen der Abwurfszeit muss sich mit dem Stromausfall zurückgesetzt haben."
+    commander "Konfiguriere sie bitte wieder richtig. Beachte dabei, ob du über einen Satelliten oder lokal den Abwurf berechnen möchtest!"
+    $ ShowScreen("choose_mic")
+    menu:
+        "Aktivieren":
+            $ mic = True
+            $renpy.notify("Mikrofon aktiv")
+            $LooseEnergy(10)
+        "Deaktivieren":
+            $ mic = False
+            $renpy.notify("Mikrofon inaktiv")
+    $ HideScreen("choose_mic")
+    $ ShowScreen("choose_cam")
+    menu:
+        "Aktivieren":
+            $ cam = True
+            $renpy.notify("Kamera aktiv")
+            $LooseEnergy(10)
+        "Deaktivieren":
+            $ cam = False
+            $renpy.notify("Kamera inaktiv")
+    $ HideScreen("choose_cam")
+    $ ShowScreen("choose_wlan")
+    menu:
+        "Aktivieren":
+            $ wlan = True
+            $renpy.notify("WLAN aktiv")
+            $LooseData(10)
+            $SatPoss = True
+        "Deaktivieren":
+            $ wlan = False
+            $renpy.notify("WLAN inaktiv")
+    $ HideScreen("choose_wlan")
+    $ ShowScreen("choose_gps")
+    menu:
+        "Aktivieren":
+            $ gps = True
+            $renpy.notify("GPS aktiv")
+            $LooseData(10)
+            $SatPoss = True
+        "Deaktivieren":
+            $ gps = False
+            $renpy.notify("GPS inaktiv")
+    $ HideScreen("choose_gps")
+    "Mikrofon: [mic] \n Kamera: [cam] \n WLAN: [wlan] \n GPS: [gps]"
+    $LooseEnergy(10)
+    $LooseData(10)
+    $ ShowScreen("choose_zeitpunkt")
+    menu:
+        "Wie soll der Abwurfszeitpunkt berechnet werden?"
+        "Über lokalen Boardcomputer":
+            $LooseEnergy(20)
+            $LooseData(10)
+            $ time = 20
+            $ countdown_title ="Berechnung läuft..."
+            $ timer_jump = "ZeitpunktBerechnet"
+
+        "Über Satelit, welcher durch eine kabellose Netzwerkverbindung mit dem Raumschiff gekoppelt ist" if SatPoss == True:
+            $LooseEnergy(10)
+            $LooseData(20)
+            $ time = 60
+            $ countdown_title ="Berechnung läuft..."
+            $ timer_jump = "ZeitpunktBerechnet"
+    show screen countdown
+
+    $ renpy.pause(hard=True)
+
+label ZeitpunktBerechnet:
+    $ HideScreen("choose_zeitpunkt")
+    $ HideScreen("App_Abwurf_Settings_Title")
+    $ ShowScreen("App_Abwurf")
+    $renpy.notify("Abwurfzeitpunkt berechnet")
+    $ renpy.pause(hard=True)
+
+label OpenAbwurfApp:
+    $ HideScreen("App_Abwurf")
+    $ ShowScreen("App_Abwurf_Title")
+    commander "Zum Aktivieren benötigen wir noch ein Passwort! Tja und das weiß nur unser Schrankverwalter Max, der natürlich nicht hier ist."
+    commander "So ein Schlingel aber auch, er gibt NIE seine Passwörter preis!"
+    commander "Aber hey, ich habe hier ein paar Unterlagen von ihm mit wirren Wörtern gefunden, vielleicht hilft uns das weiter."
+    while abwurfPW.lower() != "xchat":
+        $abwurfPW = renpy.input("Wie lautet das Passwort? (5-stellig)")
+        if abwurfPW.lower() != "xchat":
+            $renpy.notify("Falsches Passwort")
+        else:
+            $renpy.notify("Korrekt")
+    $ HideScreen("App_Abwurf_Title")
+    $ ShowScreen("os_title")
+    commander "Du bist spitze! Und übrigens, XChat ist ein cooler Messenger für Windows und Linux. Probier ihn doch mal aus, wenn wir wieder auf der Erde sind."
+    commander "Nun müssen wir nur das eine Passwort an den Maschinenraum übermitteln. Nur wie? Entscheide weise!"
+    $os_title = "Übertragungsart"
+    menu:
+        "per Textnachricht":
+            $ LooseEnergy(10)
+            $ LooseData(10)
+            commander "Eine Textnachricht sollte völlig ausreichend sein."
+        "per Sprachnachricht":
+            $ LooseEnergy(20)
+            $ LooseData(20)
+            commander "Hmm so viel Daten und Strom für ein Passwort? Nun gut."
+        "per Bildnachricht":
+            $ LooseEnergy(30)
+            $ LooseData(30)
+            commander "Hmm so viel Daten und Strom für ein Passwort? Nun gut."
+    $os_title = "XCHAT"
+    call chapter_5_pw_uebermitteln
+    $ HideScreen("os_title")
+    jump team_1_chapter_6
+    $ renpy.pause(hard=True)
+
+label chapter_5_pw_uebermitteln:
+    "Übermittle das Passwort für den Fragebogen an den Maschinenraum."
+    menu:
+        "Hast du das Passwort übermittelt/notiert?"
+        "Ja":
+            $ HideScreen("os_title")
+        "Nein":
+            call chapter_5_pw_uebermitteln
+    return

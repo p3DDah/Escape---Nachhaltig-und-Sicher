@@ -1,0 +1,126 @@
+label computerWandClicked_Systemcheck:
+    "Willkommen im Systemcheck"
+    commander "Diese App eignet sich hervorragend, um Fehler im System zu erkennen. Jetzt müssen wir nur erst einmal den Bauplan entschlüsseln!"
+    if not finishWebBrowser:
+        "Nicht verfügbar!"
+        window hide
+        $ renpy.pause(hard=True)
+
+    call abfrage_pw_erhalten
+    window hide
+    $ systemcheckPasswort = ''
+    commander "Der Bauplan enthält ein Zugangspasswort für die App."
+    while systemcheckPasswort != '72240912040715161417131812':
+        $ systemcheckPasswort = renpy.input("Bitte geben Sie das Passwort aus dem Bauplan hier ein, um den Systemcheck zu initialisieren (26-stellige Zahl)")
+        if systemcheckPasswort != '72240912040715161417131812':
+            "Leider Falsch"
+
+    "Zugang wurde gewährt!"
+    commander "Sehr schön! Nun müssen wir noch angeben, mit welchen Cookies das Programm starten soll."
+
+    menu cookieChoice:
+        "Alle Cookies aktzeptieren":
+            $ LooseEnergy(60)
+            $ LooseData(80)
+        "Einstellungen anpassen":
+            menu prefChoice:
+                "Technisch-Notwendige Cookies"
+                "Aktivieren":
+                    $ LooseEnergy(10)
+                    $ LooseData(10)
+                "Deaktivieren":
+                    "Diese Cookies sind erforderlich! Springe zurück zum Start..."
+                    pause 2.0
+                    jump cookieChoice
+            menu:
+                "Statistik-Cookies"
+                "Aktivieren":
+                    $ LooseEnergy(10)
+                    $ LooseData(10)
+                "Deaktivieren":
+                    pass
+            menu:
+                "Marketing-Cookies"
+                "Aktivieren":
+                    $ LooseEnergy(10)
+                    $ LooseData(10)
+                "Deaktivieren":
+                    pass
+            menu:
+                "Personalisierungs-Cookies"
+                "Aktivieren":
+                    $ LooseEnergy(10)
+                    $ LooseData(10)
+                "Deaktivieren":
+                    pass
+
+    "Einstellungen wurden erfolgreich gespeichert."
+    "Systemcheck wird nun durchgeführt ..."
+    commander "Puhh ich hoffe mal, dass unsere Raumsonden noch in Takt sind!"
+    pause 4.0
+    # Habs jetzt mal so gemacht das man ne 50% chance hat das es weiter geht oder halt nicht
+    # bei 40A, kann man auch noch auf 33% anpassen oder so
+    if chooseWA40:
+        "Das Licht fängt an zu flackern, der Generator gibt merkwürdige Geräusche von sich."
+        commander "Mist, was ist denn hier los?"
+        commander "Scheinbar muss das mit der Sicherung zu tun haben. Hoffen wir, dass sich der Generator wieder fängt!"
+        pause 3.0
+        $ randint = renpy.random.randint(1, 3) # 33%
+        if randint == 1:
+            "Das Flackern hat aufgehört. Der Generator läuft wieder normal."
+            commander "Endlich ist es vorbei!"
+            "Der Systemcheck konnte erfolgreich beendet werden."
+        else:
+            "ALARM: kritischer Systemausfall. Software wird zurückgesetzt"
+            commander "Ohhh nein, das wird uns einiges an Ressourcen kosten!"
+            pause 1.0
+            "system is shutting down"
+            pause 1.0
+            "restart the system"
+            pause 1.0
+            "system has been loaded"
+            jump computerWandClicked_Systemcheck
+    else:
+        "Der Systemcheck konnte erfolgreich beendet werden."
+
+    "Zur Auswertung wird ein Authentifizierungscode benötigt!"
+
+    $ sicherheitAuthPasswort = ''
+    while sicherheitAuthPasswort.lower() != 'syd':
+        $ sicherheitAuthPasswort = renpy.input("Sicherheitspasswort zu Authentifzierung")
+        if sicherheitAuthPasswort.lower() != 'syd':
+            "Leider Falsch"
+
+    "Authentifizierung erfolgreich!"
+    "Passwort für das Dokument: \"v2R6@AaV\""
+    call abfrage_pw_notiert
+    window hide
+
+
+    #Dokument einfügen (Systemcheck)
+
+    $ finishSystemcheck = True
+
+    window hide
+    $ renpy.pause(hard=True)
+
+label abfrage_pw_notiert:
+    menu:
+        "Hast du dir das Passwort \"v2R6@AaV\" notiert?"
+        "Ja":
+            pass
+        "Nein":
+            call abfrage_pw_notiert
+    return
+
+label abfrage_pw_erhalten:
+    menu:
+        "Hast du das Passwort vom Cockpit erhalten?"
+        "Ja":
+            pass
+        "Nein":
+            call abfrage_pw_erhalten
+        "Zurück":
+            window hide
+            $ renpy.pause(hard=True)
+    return

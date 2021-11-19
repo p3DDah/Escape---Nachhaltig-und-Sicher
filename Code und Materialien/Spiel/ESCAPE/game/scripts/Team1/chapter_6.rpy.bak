@@ -1,0 +1,133 @@
+label team_1_chapter_6:
+    scene cockpit
+    $ HideScreen("keyboardDummy")
+    call ShowChapter6Objects
+    call InitChapter6Vars
+    commander "Urrgh das waren starke Turbulenzen. Unser Funkgerät wurde dabei zerstört!"
+    commander "Könntest du es bitte wieder zusammenbauen? Lass die Teile, die evtl. nicht benötigt werden einfach weg"
+    commander "Denk dran, wir möchten mit dem Gerät Kontakt aufnehmen und unseren Standort senden können!"
+    $ renpy.pause(hard=True)
+
+label ShowChapter6Objects:
+    $ ShowScreen("Mikrofon")
+    $ ShowScreen("GPS")
+    $ ShowScreen("Speaker")
+    $ ShowScreen("Kamera")
+    $ ShowScreen("WLAN")
+    return
+
+label InitChapter6Vars:
+    $usedMic = False
+    $usedCam = False
+    $usedGPS = False
+    $usedSpeaker = False
+    $usedWLAN = False
+    $encryptionKey = ""
+    return
+
+label UseMic:
+    play sound "audio/code_accept.mp3"
+    $ ShowScreen("MikrofonPlaced")
+    $usedMic = True
+    call CheckFunk
+    $ LooseEnergy(10)
+    $ renpy.pause(hard=True)
+
+label UseCam:
+    play sound "audio/code_accept.mp3"
+    $ ShowScreen("KameraPlaced")
+    $usedCam = True
+    call CheckFunk
+    $ LooseEnergy(20)
+    $ renpy.pause(hard=True)
+
+label UseGPS:
+    play sound "audio/code_accept.mp3"
+    $ ShowScreen("GPSPlaced")
+    $usedGPS = True
+    call CheckFunk
+    $ LooseEnergy(10)
+    $ renpy.pause(hard=True)
+
+label UseSpeaker:
+    play sound "audio/code_accept.mp3"
+    $ ShowScreen("SpeakerPlaced")
+    $usedSpeaker = True
+    call CheckFunk
+    $ LooseEnergy(10)
+    $ renpy.pause(hard=True)
+
+label UseWLAN:
+    play sound "audio/code_accept.mp3"
+    $ ShowScreen("WLANPlaced")
+    $usedWLAN = True
+    call CheckFunk
+    $ LooseEnergy(10)
+    $ LooseData(10)
+    $ renpy.pause(hard=True)
+
+label CheckFunk:
+    if usedMic and usedGPS and usedSpeaker:
+        $renpy.notify("Mindestanforderung erfüllt")
+        $ ShowScreen("monitorFunk")
+    return
+
+label OpenFunk:
+    scene computer_off
+    $ HideScreen("monitorFunk")
+    $ HideScreen("MikrofonPlaced")
+    $ HideScreen("KameraPlaced")
+    $ HideScreen("WLANPlaced")
+    $ HideScreen("GPSPlaced")
+    $ HideScreen("SpeakerPlaced")
+    $ HideScreen("Mikrofon")
+    $ HideScreen("GPS")
+    $ HideScreen("Speaker")
+    $ HideScreen("Kamera")
+    $ HideScreen("WLAN")
+    $ ShowScreen("keyboardFunk")
+    $ renpy.pause(hard=True)
+
+label KeyboardFunkClicked:
+    if isLinux:
+        scene computer_boot_linux_01
+        pause 1.0
+        scene computer_boot_linux_02
+        pause 1.0
+        scene computer_boot_linux_03
+        pause 1.0
+        scene computer_boot_linux_04
+        pause 1.0
+        scene computer_linux_on
+    else:
+        scene computer_boot_windows
+        pause 3.0
+        scene computer_windows_on
+    $ HideScreen("keyboardFunk")
+    $ ShowScreen("keyboardDummy")
+    $ ShowScreen("Check_Encryption_Title")
+    call EnterEncryptionKey
+
+    $ renpy.pause(hard=True)
+
+label EnterEncryptionKey:
+    commander "Wir müssen unbedingt unsere Funkverbindung verschlüsseln!"
+    commander "Ohne Verschlüsselung sind wir leichtes Opfer für feindliche Länder,
+    mit falschem Chiffrierschlüssel können unsere Kollegen unsere Nachricht nicht entschlüsseln!"
+    commander "Finde den korrekten Schlüssel!"
+    $encryptionKey = renpy.input("Schlüssel eingeben (8-stellig)")
+    if encryptionKey == "2T,eW.Ü!":
+        $renpy.notify("Verschlüsselung aktiviert")
+        commander "Sehr schön! Bald sind wir mit den Vorbereitungen fertig."
+        jump team_1_chapter_7
+    else:
+        jump ErrorCountdown
+    return
+
+label ErrorCountdown:
+    $renpy.notify("Falscher Schlüssel")
+    $ time = 10
+    $ countdown_title ="Bitte warten..."
+    $ timer_jump = "EnterEncryptionKey"
+    show screen countdown
+    $ renpy.pause(hard=True)

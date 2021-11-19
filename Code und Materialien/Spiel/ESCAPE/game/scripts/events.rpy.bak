@@ -1,0 +1,95 @@
+label GameLoop:
+    play music "bg_sound.mp3"
+    scene space_1
+    "Der Weltraum, unendliche Weiten. Wir schreiben das Jahr 3196."
+    "Du befindest dich in einer Raumstation. Ihr seid auf dem Weg zur Erde."
+    "Doch was ist das?"
+    scene space_2
+    pause 1.0
+    scene space_3
+    play sound "explosion.mp3"
+    pause 1.0
+    play sound "alarm.mp3"
+    scene space_4
+    commander "Mission Control, können Sie mich hören?"
+    control "Mission Control hört."
+    commander "Wir senden vom Cockpit des Raumschiffes NCC-1701-D. Hier gibt es ein gravierendes Problem!"
+    control "Was ist passiert?"
+    commander "Ein Asteroid hat unser Raumschiff getroffen! Alle Systeme sind ausgefallen! Der Zusammenstoß hat unseren Kurs zur Erde verändert!"
+    commander "Es besteht keine Kontrolle mehr über das Schiff!"
+    commander "Ebenso wurden einige Teile der NCC-1701-D stark beschädigt, sodass kein Kontakt mehr zum Maschinenraum existiert! Ein Zugang dorthin ist unmöglich! Wir benötigen dringend Hilfe!"
+    control "Mission Control hat verstanden. Eine externe Steuerung des Schiffes ist nicht möglich!"
+    control "Aber es gibt einen Weg, dass Sie wieder auf den richtigen Kurs gelangen."
+    control "Sie müssen dazu ..."
+    "skrrrrzzzzzzzz skrrrrzzzzzzzz skrrrrzzzzzzzz"
+    commander "Mist, der Empfang zur Mission Control ist abgebrochen."
+    commander "Nun müssen wir es wohl alleine angehen!"
+    "Gib deinem Astronauten-Team einen Namen!"
+    $ spieler = renpy.input("Wie lautet der Name?")
+    commander "Auf gehts! Zurück zur Erde, Team [spieler]!"
+    menu:
+        "Bist du startklar?"
+        "Ja":
+            jump choose_team
+        "Nein":
+            jump BadEnding
+
+label choose_team:
+    call Variables
+    "Wenn du deinen Raum gewählt hast, dann startet der Countdown."
+    "Klickt bitte gleichzeitig auf den jeweiligen Raum, um einen synchronen Countdown zu erreichen!"
+    menu:
+        "Wähle deinen Raum (mindestens ein Spieler pro Raum ist erforderlich!)"
+        "Cockpit":
+            $ ShowScreen("game_countdown")
+            jump team_1_chapter_1
+        "Maschinenraum":
+            $ ShowScreen("game_countdown")
+            jump start_team_2
+        "Kein Team":
+            jump BadEnding
+    return
+
+label Variables:
+    $ currentep = 50
+    $ maxep = 50
+    $ currentdp = 100
+    $ maxdp = 100
+    $ tookKeycard = False
+    $ doorLocked = True
+    $ game_running = True
+    return
+
+label GoodEnding:
+    $ game_running = False
+    #Endscreen zeigen
+    scene EndGood Animated
+    commander "Herzlich Willkommen zurück auf der Erde. Wir haben es geschafft! Bald werden wir gerettet!"
+    $renpy.pause(hard=True)
+
+label BadEnding:
+    $ game_running = False
+    $ HideCurrentScreens(currentScreensList)
+    #Endscreen zeigen
+    scene EndBad Animated
+    $renpy.pause(hard=True)
+
+label gameover:
+    $ game_running = False
+    #gameover Bild szene einfügen
+    $ HideCurrentScreens(currentScreensList)
+    scene space_1
+    show screen game_over
+    play sound "audio/game_over.mp3"
+
+    $renpy.pause(hard=True)
+
+label OpenInventory:
+    $ HideScreen("inventory_button")
+    $ ShowScreen("inventory_screen")
+    $renpy.pause(hard=True)
+
+label CloseInventory:
+    $ ShowScreen("inventory_button")
+    $ HideScreen("inventory_screen")
+    $renpy.pause(hard=True)
